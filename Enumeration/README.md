@@ -2,6 +2,8 @@
 
 Enumeration is the first step you have to take once you gain access to any system. You may have accessed the system by exploiting a critical vulnerability that resulted in root-level access or just found a way to send commands using a low privileged account. Penetration testing engagements, unlike CTF machines, don't end once you gain access to a specific system or user privilege level. As you will see, enumeration is as important during the post-compromise phase as it is before.
 
+# Manual Enumeration
+
 ## hostname Commands:
 The hostname command will return the hostname of the target machine. Although this value can easily be changed or have a relatively meaningless string (e.g. Ubuntu-3487340239), in some cases, it can provide information about the target system’s role within the corporate network (e.g. SQL-PROD-01 for a production SQL server).
 ```
@@ -163,3 +165,15 @@ find / -perm -u=s -type f 2>/dev/null		# → Find files with the SUID bit, which
 
 ## General Linux Commands:
 As we are in the Linux realm, familiarity with Linux commands, in general, will be very useful. Please spend some time getting comfortable with commands such as find, locate, grep, cut, sort, etc. 
+
+# Automated Enumeration Tools
+Several tools can help you save time during the enumeration process. These tools should only be used to save time knowing they may miss some privilege escalation vectors. Below is a list of popular Linux enumeration tools with links to their respective Github repositories.
+
+The target system’s environment will influence the tool you will be able to use. For example, you will not be able to run a tool written in Python if it is not installed on the target system. This is why it would be better to be familiar with a few rather than having a single go-to tool.
+
+  - **LinPeas:** https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS
+  - **LinEnum:** https://github.com/rebootuser/LinEnum
+  - **LES (Linux Exploit Suggester):** https://github.com/mzet-/linux-exploit-suggester
+  - **Linux Smart Enumeration:** https://github.com/diego-treitos/linux-smart-enumeration
+  - **Linux Priv Checker:** https://github.com/linted/linuxprivchecker 
+

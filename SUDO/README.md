@@ -93,6 +93,7 @@ sudo LD_LIBRARY_PATH=/tmp apache2
 ```
 - Tells Apache2 to search /tmp first for libraries.
 - Since we placed a fake libcrypt.so.1 in /tmp, Apache2 loads our malicious code, giving us root access.
+
 ✅ Root shell acquired!
 
 # 🔎 Debugging & Improving the Attack

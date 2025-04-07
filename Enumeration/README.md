@@ -76,7 +76,7 @@ env	# → The env command will show environmental variables.
 ```
 The PATH variable may have a compiler or a scripting language (e.g. Python) that could be used to run code on the target system or leveraged for privilege escalation.
 
-## sudo -l Command:
+## 📌sudo -l Command:
 The target system may be configured to allow users to run some (or all) commands with root privileges. The sudo -l command can be used to list all commands your user can run using sudo.
 ```
 sudo -l
@@ -162,13 +162,13 @@ find / -name gcc*
 # → Find specific file permissions:
 find / -perm -u=s -type f 2>/dev/null		# → Find files with the SUID bit, which allows us to run the file with a higher privilege level than the current user.
 
-# Enumerate Backups:
+# → Enumerate Backups:
 find /var /etc /bin /sbin /home /usr/local/bin /usr/local/sbin /usr/bin /usr/games /usr/sbin /root /tmp -type f \(-name "*backup*" -o -name "*\.bak" -o -name "*\.bck" -o -name "*\.bk" \) 2>/dev/null
 
-# Enumerate DBs:
+# → Enumerate DBs:
 find / -name '.db' -o -name '.sqlite' -o -name '*.sqlite3' 2>/dev/null
 
-# Enumerate Hidden Files
+# → Enumerate Hidden Files
 find / -type f -iname ".*" -ls 2>/dev/null
 ```
 
@@ -187,28 +187,28 @@ netstat -tulpn        	# → Displays active TCP/UDP connections with the proces
 ifconfig              	# → Displays network interface configurations (IP address, MAC, etc.).
 locate pass | more    	# → Finds file paths with "pass" in their name using the locate database and shows them page by page.
 sudo -V			# → Sudo Version
-netstat -anlp		# Enumerate Services
-netstat -ano		# Enumerate Services
-ps aux | grep root	# Enumerate root run binaries.
-cat /etc/shells		# Enumerate shells
-echo $SHELL		# Enumerate current shell.
-/bin/bash --version	# Enumerate shell version.
+netstat -anlp		# → Enumerate Services
+netstat -ano		# → Enumerate Services
+ps aux | grep root	# → Enumerate root run binaries.
+cat /etc/shells		# → Enumerate shells
+echo $SHELL		# → Enumerate current shell.
+/bin/bash --version	# → Enumerate shell version.
 
 
 
 find . -type f -exec grep -i -I "PASSWORD=" {} /dev/null \;  # → Searches for files containing "PASSWORD=" in the current directory and subdirectories.
 ps -aux | grep root | grep mysql  	# → Filters processes running as root and related to MySQL.
-cat /etc/passwd | cut -d ":" -f 1	# Enumerate System users.
-cat /etc/group | cut -d ":" -f 1 	# Enumerate system groups.
-cat /etc/crontab | grep 'root'		# Enumerate root crontab.
+cat /etc/passwd | cut -d ":" -f 1	# → Enumerate System users.
+cat /etc/group | cut -d ":" -f 1 	# → Enumerate system groups.
+cat /etc/crontab | grep 'root'		# → Enumerate root crontab.
 
-# Enumerate binary Version:
+# → Enumerate binary Version:
 program -v
 program --version
 program -V
 dpkg -l | grep "program"
 
-# Enumerate Programming Languages
+# → Enumerate Programming Languages
 which python
 which perl
 which ruby
@@ -229,7 +229,7 @@ locate *.ovpn
 tcpdump -nt -r capture.pcap -A 2>/dev/null | grep -P 'pwd='                    
 ```
 
-## General Linux Commands:
+## 📌General Linux Commands:
 As we are in the Linux realm, familiarity with Linux commands, in general, will be very useful. Please spend some time getting comfortable with commands such as find, locate, grep, cut, sort, etc. 
 
 # Automated Enumeration Tools

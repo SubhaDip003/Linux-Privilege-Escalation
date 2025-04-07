@@ -2,9 +2,9 @@
 
 Enumeration is the first step you have to take once you gain access to any system. You may have accessed the system by exploiting a critical vulnerability that resulted in root-level access or just found a way to send commands using a low privileged account. Penetration testing engagements, unlike CTF machines, don't end once you gain access to a specific system or user privilege level. As you will see, enumeration is as important during the post-compromise phase as it is before.
 
-# Manual Enumeration
+# 🔍Manual Enumeration
 
-## hostname Commands:
+## 📌hostname Commands:
 The hostname command will return the hostname of the target machine. Although this value can easily be changed or have a relatively meaningless string (e.g. Ubuntu-3487340239), in some cases, it can provide information about the target system’s role within the corporate network (e.g. SQL-PROD-01 for a production SQL server).
 ```
 hostname   		# → Displays the system’s hostname (computer name)
@@ -17,7 +17,7 @@ hostnamectl 		# → Gives detailed info about the hostname and OS
 cat /etc/hostname	# → Prints the hostname from the config file
 ```
 
-## uname Commands:
+## 📌uname Commands:
 Will print system information giving us additional detail about the kernel used by the system. This will be useful when searching for any potential kernel vulnerabilities that could lead to privilege escalation.
 ```
 uname 		# → Shows the kernel name (usually "Linux").
@@ -32,20 +32,20 @@ uname --help	# → Shows help info with all available options.
 uname --version	# → Shows the version of the uname utility itself.
 ```
 
-## /proc/version file:
+## 📌/proc/version file:
 The proc filesystem (procfs) provides information about the target system processes. You will find proc on many different Linux flavours, making it an essential tool to have in your arsenal.
 Looking at /proc/version may give you information on the kernel version and additional data such as whether a compiler (e.g. GCC) is installed.
 ```
 cat /proc/version
 ```
 
-## /etc/issue file:
+## 📌/etc/issue file:
 Systems can also be identified by looking at the /etc/issue file. This file usually contains some information about the operating system but can easily be customized or changed. While on the subject, any file containing system information can be customized or changed. For a clearer understanding of the system, it is always good to look at all of these.
 ```
 cat /etc/issue
 ```
 
-## ps Commands:
+## 📌ps Commands:
 The ps command is an effective way to see the running processes on a Linux system. Typing ps on your terminal will show processes for the current shell.
 The output of the ps (Process Status) will show the following;
 - **PID:** The process ID (unique to the process)
@@ -68,7 +68,7 @@ ps -eo user,group,comm		# → Shows which user/group is running which command.
 
 ```
 
-## env Command:
+## 📌env Command:
 The env command will show environmental variables.
 ```
 env	# → The env command will show environmental variables.
@@ -82,21 +82,21 @@ The target system may be configured to allow users to run some (or all) commands
 sudo -l
 ```
 
-## ls Command:
+## 📌ls Command:
 One of the common commands used in Linux is probably ls.
 While looking for potential privilege escalation vectors, please remember to always use the ls command with the -la parameter to show the hidden files (.files).
 ```
 ls -la
 ```
 
-## Id Command:
+## 📌Id Command:
 The id command will provide a general overview of the user’s privilege level and group memberships.
 It is worth remembering that the id command can also be used to obtain the same information for another user as seen below.
 ```
 id
 ```
 
-## /etc/passwd file:
+## 📌/etc/passwd file:
 Reading the /etc/passwd file can be an easy way to discover users on the system. 
 ```
 cat /etc/passwd				# → Read the content of the file.
@@ -104,20 +104,20 @@ cat /etc/passwd | cut -d ":" -f 1	# → Lists all the usernames on the system.
 cat /etc/passwd | grep home		# → Shows users who have a home directory, usually real human users, not system accounts.
 ```
 
-##  history Command:
+##  📌history Command:
 Looking at earlier commands with the history command can give us some idea about the target system and, albeit rarely, have stored information such as passwords or usernames. 
 ```
 history
 ```
 
-## ifconfig Command:
+## 📌ifconfig Command:
 The target system may be a pivoting point to another network. The ifconfig command will give us information about the network interfaces of the system.
 ```
 ifconfig
 ip route	# → To see which network routes exist.
 ```
 
-## netstat Commands:
+## 📌netstat Commands:
 Following an initial check for existing interfaces and network routes, it is worth looking into existing communications. The netstat command can be used with several different options to gather information on existing connections. 
 ```
 netstat -a	# → shows all listening ports and established connections.
@@ -132,7 +132,7 @@ netstat -i	# → Displays network interfaces and statistics.
 netstat -ano	# → Lists all connections with: a=all connections, n=shows numeric addresses, o=shows owning process ID (PID)
 ```
 
-## find Command:
+## 📌find Command:
 Searching the target system for important information and potential privilege escalation vectors can be fruitful. The built-in “find” command is useful and worth keeping in your arsenal.
 Below are some useful examples for the “find” command. 
 ```
@@ -161,6 +161,61 @@ find / -name gcc*
 
 # → Find specific file permissions:
 find / -perm -u=s -type f 2>/dev/null		# → Find files with the SUID bit, which allows us to run the file with a higher privilege level than the current user. 
+```
+
+# 🔍Some Other Manual Enumeration
+
+## 📌Basic System Enumeration:
+```
+uname -a		# → Displays detailed system information including kernel name, version, and architecture.
+hostname              	# → Displays the system’s hostname (computer name).
+lscpu                	# → Shows CPU architecture details like number of cores, threads, model name, etc.
+ls /home              	# → Lists user directories in the /home directory.
+ls /var/www/html      	# → Lists web files in the default Apache web server directory.
+ls /var/www/          	# → Lists contents of the main web server directory.
+ps aux | grep root    	# → Shows running processes owned by root.
+netstat -tulpn        	# → Displays active TCP/UDP connections with the process ID and names.
+ifconfig              	# → Displays network interface configurations (IP address, MAC, etc.).
+locate pass | more    	# → Finds file paths with "pass" in their name using the locate database and shows them page by page.
+sudo -V			# → Sudo Version
+netstat -anlp		# Enumerate Services
+netstat -ano		# Enumerate Services
+ps aux | grep root	# Enumerate root run binaries.
+cat /etc/shells		# Enumerate shells
+echo $SHELL		# Enumerate current shell.
+/bin/bash --version	# Enumerate shell version.
+
+
+
+find . -type f -exec grep -i -I "PASSWORD=" {} /dev/null \;  # → Searches for files containing "PASSWORD=" in the current directory and subdirectories.
+ps -aux | grep root | grep mysql  	# → Filters processes running as root and related to MySQL.
+cat /etc/passwd | cut -d ":" -f 1	# Enumerate System users.
+cat /etc/group | cut -d ":" -f 1 	# Enumerate system groups.
+cat /etc/crontab | grep 'root'		# Enumerate root crontab.
+
+# Enumerate binary Version:
+program -v
+program --version
+program -V
+dpkg -l | grep "program"
+
+# Enumerate Backups:
+find /var /etc /bin /sbin /home /usr/local/bin /usr/local/sbin /usr/bin /usr/games /usr/sbin /root /tmp -type f \(-name "*backup*" -o -name "*\.bak" -o -name "*\.bck" -o -name "*\.bk" \) 2>/dev/null
+					
+```
+## 📌Bash History
+```
+history                            
+cat /home/<user>/.bash_history     
+cat ~/.bash_history | grep -i passw 
+```
+## 📌OpenVPN Credentials
+```
+locate *.ovpn                       
+```
+## 📌Credentials in tcpdump files
+```
+tcpdump -nt -r capture.pcap -A 2>/dev/null | grep -P 'pwd='                    
 ```
 
 ## General Linux Commands:

@@ -114,3 +114,11 @@ id && whoami
 echo "username ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
 echo "username ALL=NOPASSWD: /bin/bash" >>/etc/sudoers
 ```
+
+# 🔎Resourses
+- https://www.hackingarticles.in/editing-etc-passwd-file-for-privilege-escalation/
+- https://github.com/Ignitetechnologies/Linux-Privilege-Escalation
+- https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/#writable-etcsudoers
+- https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md
+- https://github.com/Divinemonk/linux_privesc_cheatsheet
+- https://github.com/gurkylee/Linux-Privilege-Escalation-Basics

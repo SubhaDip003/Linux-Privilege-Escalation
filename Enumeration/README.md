@@ -160,7 +160,16 @@ find / -name python*
 find / -name gcc*
 
 # → Find specific file permissions:
-find / -perm -u=s -type f 2>/dev/null		# → Find files with the SUID bit, which allows us to run the file with a higher privilege level than the current user. 
+find / -perm -u=s -type f 2>/dev/null		# → Find files with the SUID bit, which allows us to run the file with a higher privilege level than the current user.
+
+# Enumerate Backups:
+find /var /etc /bin /sbin /home /usr/local/bin /usr/local/sbin /usr/bin /usr/games /usr/sbin /root /tmp -type f \(-name "*backup*" -o -name "*\.bak" -o -name "*\.bck" -o -name "*\.bk" \) 2>/dev/null
+
+# Enumerate DBs:
+find / -name '.db' -o -name '.sqlite' -o -name '*.sqlite3' 2>/dev/null
+
+# Enumerate Hidden Files
+find / -type f -iname ".*" -ls 2>/dev/null
 ```
 
 # 🔍Some Other Manual Enumeration
@@ -199,9 +208,11 @@ program --version
 program -V
 dpkg -l | grep "program"
 
-# Enumerate Backups:
-find /var /etc /bin /sbin /home /usr/local/bin /usr/local/sbin /usr/bin /usr/games /usr/sbin /root /tmp -type f \(-name "*backup*" -o -name "*\.bak" -o -name "*\.bck" -o -name "*\.bk" \) 2>/dev/null
-					
+# Enumerate Programming Languages
+which python
+which perl
+which ruby
+which lua0					
 ```
 ## 📌Bash History
 ```

